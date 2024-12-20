@@ -1,0 +1,18 @@
+<head>
+    <link rel="stylesheet" href="./dist/voice-sdk.css">
+</head>
+<body>
+    <div id="app"></div>
+</body>
+
+<script src="./dist/voice-sdk.umd.cjs"></script>
+<script>
+    console.log(window.VoiceSDK)
+    window.VoiceSDK.init('abc', 'def')
+    window.VoiceSDK.setup({
+        statusElementId: 'app',
+        domainId: '1',
+        domainName: '2',
+        socketUrl: 'wss://voice.3bot.org',
+    })
+</script>

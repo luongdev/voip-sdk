@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import Status from './components/Status.vue';
+import Status from './components/status/Status.vue'
 </script>
 
 <template>
-  <Status />
+<Status />
 </template>

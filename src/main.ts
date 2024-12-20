@@ -3,12 +3,18 @@ import App from './App.vue'
 
 import ElementPlus from 'element-plus'
 
-
 import 'element-plus/dist/index.css'
+import './main.css'
+import {statusService, StatusService} from "./components/status/status.service.ts";
 
 const statusApp = createApp(App)
+
+statusApp.provide(statusService, new StatusService())
+
+
 statusApp.use(ElementPlus)
 statusApp.mount(`#app`)
+
 
 
 class VoiceSDK {

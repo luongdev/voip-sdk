@@ -1,12 +1,11 @@
 <script lang="ts" setup>
 import {computed, inject, onMounted, onUnmounted, ref} from 'vue';
-import {StatusOption, StatusType} from "./data.ts";
+import {StatusOption, StatusType,StatusReason} from "./data.ts";
 import Option from "./Option.vue";
 import {statusService as statusServiceKey, StatusService} from "./status.service.ts";
 
 const props = defineProps<{ initialStatus?: StatusType; }>();
-
-// const emit = defineEmits<{ (e: 'change', status: StatusType, reason?: string): void; }>();
+const emit = defineEmits<{ (e: 'change', status: StatusType, reason?: string): void; }>();
 
 const statusService = inject<StatusService>(statusServiceKey);
 
@@ -20,15 +19,24 @@ const timer = ref('00:00');
 const selectedNotReadyReason = ref('');
 
 const currentOption = computed(() => statuses?.get(currentStatus.value));
+const statusReasons = computed(() => {
+  const statusReasons: StatusReason[] = [];
+  reasons?.forEach(v => statusReasons.push(v));
+
+  return statusReasons;
+});
 
 const availableOptions = computed(() => {
   const options: StatusOption[] = [];
   statuses?.forEach(v => {
-    if (!v.transitions?.length) {
+    if (!v.transitions?.length || v.value === currentStatus.value) {
       return;
     }
     options.push(v);
   });
+
+  console.log(options);
+
   return options;
 });
 
@@ -48,22 +56,24 @@ const startTimer = () => {
   }, 1000);
 };
 
-const handleStatusChange = (value: string) => {
-  console.log(value)
-  // if (isReserving.value || currentStatus.value === 'in-call') return;
-  //
-  // if (value.includes(':')) {
-  //     const [status, reason] = value.split(':');
-  //     currentStatus.value = status;
-  //     selectedNotReadyReason.value = reason;
-  //     emit('statusChange', status, reason);
-  // } else {
-  //     currentStatus.value = value;
-  //     selectedNotReadyReason.value = '';
-  //     emit('statusChange', value);
-  // }
-  //
-  // startTimer();
+const handleStatusChange = (value: string | string[]) => {
+  if (Array.isArray(value)) {
+    const [status, reason] = value;
+    const finalStatus = status as StatusType;
+
+    currentStatus.value = finalStatus;
+    selectedNotReadyReason.value = reason;
+
+    emit('change', finalStatus, reason);
+  } else {
+    const finalStatus = value as StatusType;
+    currentStatus.value = finalStatus;
+    selectedNotReadyReason.value = '';
+
+    emit('change', finalStatus);
+  }
+
+  startTimer();
 };
 
 onMounted(() => startTimer());
@@ -81,24 +91,18 @@ onUnmounted(() => clearInterval(timerInterval));
         @change="handleStatusChange"
     >
       <template #prefix>
-        <div
-            class="status-indicator"
-            :style="{ backgroundColor: currentOption?.color }"
-        ></div>
+        <span class="indicator" :style="{ backgroundColor: currentOption?.color }" />
       </template>
 
       <template #label>
-        <div
-            style="display: flex; justify-content: space-between"
-            :style="{ color: currentOption?.color }"
-        >
+        <div style="display: flex; justify-content: space-between" :style="{ color: currentOption?.color }">
           <span>{{ currentOption?.label }}</span>
           <span>{{ timer }}</span>
         </div>
       </template>
 
       <template v-for="status in availableOptions" :key="status.value">
-        <Option :status="status"/>
+        <Option :status="status" :reasons="statusReasons" />
       </template>
     </el-select>
   </div>

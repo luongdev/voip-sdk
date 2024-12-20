@@ -15,7 +15,8 @@ export class StatusService {
             label: 'Not Ready',
             value: 'not_ready',
             color: StatusColor.NotReady,
-            transitions: ['ready']
+            transitions: ['ready'],
+            reasons: ['lunch', 'break', 'meeting'],
         }],
         ['on_call', {
             label: 'On Call',

@@ -40,6 +40,7 @@ class VoiceSDK {
                 user: this.user
             })
             statusApp.use(ElementPlus)
+            statusApp.provide(statusService, new StatusService())
             statusApp.mount(`#${config.statusElementId}`)
         }
 

@@ -1,7 +1,9 @@
 <script lang="ts" setup>
-import { StatusOption, StatusType } from "./data.ts";
+import {StatusOption, StatusReason} from "./data.ts";
 
-defineProps<{ status: StatusOption; }>();
+const {status, reasons} = defineProps<{ status: StatusOption; reasons?: StatusReason[] }>();
+
+console.log(status, reasons);
 
 </script>
 
@@ -9,10 +11,15 @@ defineProps<{ status: StatusOption; }>();
   <!-- Reasons option -->
   <template v-if="status.reasons?.length">
     <el-option-group :label="status.label" :style="{ '--el-color-info': status.color }">
-      <el-option v-for="reason in status.reasons" :key="reason.value" :value="reason.value" :label="reason.label">
+      <el-option
+          v-for="reason in reasons"
+          :key="reason.value"
+          :label="reason.label"
+          :value="[status.value, reason.value]"
+      >
         <div class="status-option">
           <span class="indicator" :style="{ backgroundColor: status.color }"/>
-          <span :style="{ color: status.color }">{{ reason.label }}</span>
+          <span :style="{ color: status.color }" class="status-reason">{{ reason.label }}</span>
         </div>
       </el-option>
     </el-option-group>
@@ -36,5 +43,18 @@ defineProps<{ status: StatusOption; }>();
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+
+.status-reason {
+  font-size: 14px;
+  font-weight: lighter;
+}
+
+:deep(.el-select-group__title) {
+  font-size: 1.2em;
+}
+
+:deep(.el-select-group) {
+  padding-left: 2rem;
 }
 </style>

@@ -4,6 +4,7 @@ import {StatusOption, StatusType, StatusReason} from "./data.ts";
 import Option from "./Option.vue";
 import {statusService as statusServiceKey, StatusService} from "./status.service.ts";
 
+
 const props = defineProps<{ initialStatus?: StatusType; }>();
 const emit = defineEmits<{ (e: 'change', status: StatusType, reason?: string): void; }>();
 
@@ -100,4 +101,5 @@ onUnmounted(() => clearInterval(timerInterval));
 </template>
 
 <style scoped>
+@import './status.css';
 </style>

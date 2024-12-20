@@ -1,9 +1,10 @@
+<!doctype html>
+<html>
 <head>
+    <title>Day la title</title>
 </head>
 <body>
-    <div id="app"></div>
-</body>
-
+<div id="app"></div>
 <script>
     (function (d, id) {
         let js, lk, head = d.getElementsByTagName('head')[0];
@@ -23,14 +24,24 @@
         }
     }(document, 'voice-sdk'));
 
-    window.onload = function () {
-        console.log(window.VoiceSDK)
-        window.VoiceSDK.init('abc', 'def')
-        window.VoiceSDK.setup({
-            statusElementId: 'app',
-            domainId: '1',
-            domainName: '2',
-            socketUrl: 'wss://voice.3bot.org',
-        })
-    };
+    window.onload =  function () {
+      console.log(window.VoiceSDK)
+      window.VoiceSDK.init({
+            el: 'app',
+            appId: 'your-app-id',
+            appName: 'your-app-name',
+            secretKey: 'your-secret-key',
+        }, i => {
+            i.connect({
+                delegate: {
+                    onStatus: (status, reason) => {
+                        console.log('onStatus', status, reason);
+                    }
+                }
+            })
+        });
+    }
 </script>
+</body>
+
+</html>

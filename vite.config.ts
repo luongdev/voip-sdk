@@ -27,7 +27,8 @@ export default defineConfig({
     },
     build: {
         lib: {
-            entry: 'src/main.ts',
+            entry: 'src/api/voice-sdk.ts',
+            // entry: 'src/main.ts',
             name: 'VoiceSDK',
             fileName: 'voice-sdk',
             formats: ['es', 'umd'],

@@ -36,7 +36,9 @@ const {status, reasons} = defineProps<{ status: StatusOption; reasons?: StatusRe
   <!-- /.Regular options -->
 </template>
 
+
 <style scoped>
+@import './status.css';
 .status-option {
   display: flex;
   align-items: center;

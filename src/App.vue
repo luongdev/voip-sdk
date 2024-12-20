@@ -2,10 +2,10 @@
 import Status from './components/status/Status.vue'
 import {StatusType} from "./components/status/data.ts";
 
-const { change } = defineProps<{ change: (...args: any[]) => void; }>();
+const { changeFn } = defineProps<{ changeFn?: (...args: any[]) => void; }>();
 
 const handleStatusChange = (status: StatusType, reason?: string) => {
-  change(status, reason)
+  changeFn?.(status, reason)
 };
 
 </script>

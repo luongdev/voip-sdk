@@ -7,7 +7,11 @@ import 'element-plus/dist/index.css'
 import './main.css'
 import {statusService, StatusService} from "./components/status/status.service.ts";
 
-const statusApp = createApp(App)
+const changeFunction = (...args: any[]) => {
+    console.log('changeFunction', args)
+}
+
+const statusApp = createApp(App, { change: changeFunction })
 
 statusApp.provide(statusService, new StatusService())
 

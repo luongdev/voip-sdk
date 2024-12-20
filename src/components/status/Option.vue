@@ -3,8 +3,6 @@ import {StatusOption, StatusReason} from "./data.ts";
 
 const {status, reasons} = defineProps<{ status: StatusOption; reasons?: StatusReason[] }>();
 
-console.log(status, reasons);
-
 </script>
 
 <template>

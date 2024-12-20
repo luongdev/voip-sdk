@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import {computed, inject, onMounted, onUnmounted, ref} from 'vue';
-import {StatusOption, StatusType,StatusReason} from "./data.ts";
+import {StatusOption, StatusType, StatusReason} from "./data.ts";
 import Option from "./Option.vue";
 import {statusService as statusServiceKey, StatusService} from "./status.service.ts";
 
@@ -10,9 +10,6 @@ const emit = defineEmits<{ (e: 'change', status: StatusType, reason?: string): v
 const statusService = inject<StatusService>(statusServiceKey);
 
 const {statuses, reasons} = statusService?.getStatusOptions() ?? {};
-
-
-console.log(statuses, reasons)
 
 const currentStatus = ref<StatusType>(props.initialStatus || 'ready');
 const timer = ref('00:00');
@@ -28,14 +25,10 @@ const statusReasons = computed(() => {
 
 const availableOptions = computed(() => {
   const options: StatusOption[] = [];
-  statuses?.forEach(v => {
-    if (!v.transitions?.length || v.value === currentStatus.value) {
-      return;
-    }
-    options.push(v);
+  currentOption.value?.transitions?.forEach(v => {
+    const status = statuses?.get(v);
+    if (status) options.push(status);
   });
-
-  console.log(options);
 
   return options;
 });
@@ -50,9 +43,7 @@ const startTimer = () => {
     seconds++;
     const minutes = Math.floor(seconds / 60);
     const remainingSeconds = seconds % 60;
-    timer.value = `${minutes.toString().padStart(2, '0')}:${remainingSeconds
-        .toString()
-        .padStart(2, '0')}`;
+    timer.value = `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
   }, 1000);
 };
 
@@ -91,7 +82,7 @@ onUnmounted(() => clearInterval(timerInterval));
         @change="handleStatusChange"
     >
       <template #prefix>
-        <span class="indicator" :style="{ backgroundColor: currentOption?.color }" />
+        <span class="indicator" :style="{ backgroundColor: currentOption?.color }"/>
       </template>
 
       <template #label>
@@ -102,7 +93,7 @@ onUnmounted(() => clearInterval(timerInterval));
       </template>
 
       <template v-for="status in availableOptions" :key="status.value">
-        <Option :status="status" :reasons="statusReasons" />
+        <Option :status="status" :reasons="statusReasons"/>
       </template>
     </el-select>
   </div>

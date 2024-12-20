@@ -1,13 +1,7 @@
-<head>
-</head>
-<body>
-    <div id="app"></div>
-</body>
-
 <script>
     (function (d, id) {
-        let js, lk, head = d.getElementsByTagName('head')[0];
-        if (!d.getElementById(id + 'css')) {
+        let js, lk, base = 'https://connect.luongdev.info', head = d.getElementsByTagName('head')[0];
+        if (!d.getElementById(id + 'js')) {
             js = d.createElement('script');
             js.id = id + 'js';
             js.src = './dist/voice-sdk.umd.cjs';
@@ -24,8 +18,8 @@
     }(document, 'voice-sdk'));
 
     window.onload = function () {
-        console.log(window.VoiceSDK)
-        window.VoiceSDK.init('abc', 'def')
+        console.log(window.VoiceSDK);
+        window.VoiceSDK.init('abc', 'def');
         window.VoiceSDK.setup({
             statusElementId: 'app',
             domainId: '1',

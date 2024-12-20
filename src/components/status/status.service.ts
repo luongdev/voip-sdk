@@ -9,7 +9,7 @@ export class StatusService {
             label: 'Ready',
             value: 'ready',
             color: StatusColor.Ready,
-            transitions: ['not_ready', 'on_call']
+            transitions: ['not_ready']
         }],
         ['not_ready', {
             label: 'Not Ready',
@@ -22,13 +22,12 @@ export class StatusService {
             label: 'On Call',
             value: 'on_call',
             color: StatusColor.OnCall,
-            transitions: ['wrap_up']
         }],
         ['wrap_up', {
             label: 'Wrap Up',
             value: 'wrap_up',
             color: StatusColor.WrapUp,
-            transitions: ['ready']
+            transitions: ['ready', 'not_ready']
         }]
     ])
 
